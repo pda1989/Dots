@@ -50,7 +50,52 @@ namespace Dots
 
         public void CheckChains()
         {
+            for (int i = 0; i < Field.Count; i++)
+                for (int j = 0; j < Field.Count; j++)
+                    if (Field[i][j].Value != 0 && Field[i][j].Active && !Field[i][j].Chain)
+                        Field[i][j].Chain = FindChain(Field[i][j], i, j, 1);
+        }
 
+        private bool FindChain(Dot initDot, int iCurrent, int jCurrent, int count)
+        {
+            if (Field[iCurrent][jCurrent] == initDot && count >= 4)
+                return true;
+
+            var currentValue = Field[iCurrent][jCurrent].Value;
+
+            if (iCurrent - 1 > 0 && jCurrent - 1 > 0 && currentValue == Field[iCurrent - 1][jCurrent - 1].Value)
+            {
+                Field[iCurrent - 1][jCurrent - 1].Chain = FindChain(initDot, iCurrent - 1, jCurrent - 1, count + 1);
+                return Field[iCurrent - 1][jCurrent - 1].Chain;
+            }
+            if (iCurrent - 1 > 0 && currentValue == Field[iCurrent - 1][jCurrent].Value)
+            {
+                Field[iCurrent - 1][jCurrent].Chain = FindChain(initDot, iCurrent - 1, jCurrent, count + 1);
+                return Field[iCurrent - 1][jCurrent].Chain;
+            }
+            if (jCurrent - 1 > 0 && currentValue == Field[iCurrent][jCurrent - 1].Value)
+            {
+                Field[iCurrent][jCurrent - 1].Chain = FindChain(initDot, iCurrent, jCurrent - 1, count + 1);
+                return Field[iCurrent][jCurrent - 1].Chain;
+            }
+
+            if (iCurrent + 1 < Field.Count && jCurrent + 1 < Field.Count && currentValue == Field[iCurrent + 1][jCurrent + 1].Value)
+            {
+                Field[iCurrent + 1][jCurrent + 1].Chain = FindChain(initDot, iCurrent + 1, jCurrent + 1, count + 1);
+                return Field[iCurrent + 1][jCurrent + 1].Chain;
+            }
+            if (iCurrent + 1 < Field.Count && currentValue == Field[iCurrent + 1][jCurrent].Value)
+            {
+                Field[iCurrent + 1][jCurrent].Chain = FindChain(initDot, iCurrent + 1, jCurrent, count + 1);
+                return Field[iCurrent + 1][jCurrent].Chain;
+            }
+            if (jCurrent + 1 > 0 && currentValue == Field[iCurrent][jCurrent + 1].Value)
+            {
+                Field[iCurrent][jCurrent + 1].Chain = FindChain(initDot, iCurrent, jCurrent + 1, count + 1);
+                return Field[iCurrent][jCurrent + 1].Chain;
+            }
+
+            return false;
         }
 
         public override string ToString()
