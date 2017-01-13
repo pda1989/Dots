@@ -7,7 +7,8 @@ namespace Dots
         bool FirstMove { get; set; }
         List<List<Dot>> Field { get; set; }
 
-        void InitialyzeField(int size);
+        void Initialyze(int size);
+        List<List<Dot>> Clone();
         bool MakeMove(int i, int j);
         void CheckChains();
     }

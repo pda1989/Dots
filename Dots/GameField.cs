@@ -14,11 +14,11 @@ namespace Dots
 
         public GameField(int size)
         {
-            InitialyzeField(size);
+            Initialyze(size);
             FirstMove = true;
         }
 
-        public void InitialyzeField(int size)
+        public void Initialyze(int size)
         {
             Field = new List<List<Dot>>();
 
@@ -204,6 +204,15 @@ namespace Dots
                         }
                     Field[i][j].Closed = (topClosed && bottomClosed && leftClosed && rightClosed);
                 }
+
+            // Calculate chains and set states for dots
+            for (int i = 1; i < Field.Count - 1; i++)
+                for (int j = 1; j < Field.Count - 1; j++)
+                {
+                    var oldField = Clone();
+                    if (Field[i][j].Closed && Field[i][j].Active)
+                        Field = oldField;
+                }
         }
 
         public override string ToString()
@@ -219,6 +228,19 @@ namespace Dots
                 output.AppendLine();
             }
             return output.ToString();
+        }
+
+        public List<List<Dot>> Clone()
+        {
+            var newField = new List<List<Dot>>();
+            foreach (var row in Field)
+            {
+                var newRow = new List<Dot>();
+                foreach (var dot in row)
+                    newRow.Add(dot.Clone());
+                newField.Add(newRow);
+            }
+            return newField;
         }
     }
 }

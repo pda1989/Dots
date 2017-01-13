@@ -22,7 +22,7 @@ namespace Dots
                 if (command.ToLower() == "exit") break;
 
                 if (command.ToLower() == "clear")
-                    game.InitialyzeField(10);
+                    game.Initialyze(10);
 
                 var words = command.Trim().Split(' ');
                 if (words.Length == 2)
