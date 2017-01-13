@@ -21,6 +21,9 @@ namespace Dots
 
                 if (command.ToLower() == "exit") break;
 
+                if (command.ToLower() == "clear")
+                    game.InitialyzeField(10);
+
                 var words = command.Trim().Split(' ');
                 if (words.Length == 2)
                 {
@@ -28,7 +31,7 @@ namespace Dots
                     if (int.TryParse(words[0], out i) && int.TryParse(words[1], out j))
                         try
                         {
-                            if (game.MakeMove(i, j))
+                            if (game.MakeMove(i - 1, j - 1))
                                 game.CheckChains();
                         }
                         catch (Exception e)
