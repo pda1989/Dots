@@ -10,7 +10,7 @@ namespace Dots
     {
         static void Main(string[] args)
         {
-            var game = new GameField(10);
+            var game = new GameField(5);
             Console.WriteLine("Field");
             Console.WriteLine(game.ToString());
 
@@ -22,7 +22,7 @@ namespace Dots
                 if (command.ToLower() == "exit") break;
 
                 if (command.ToLower() == "clear")
-                    game.Initialyze(10);
+                    game.Initialyze(5);
 
                 var words = command.Trim().Split(' ');
                 if (words.Length == 2)
