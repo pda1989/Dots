@@ -58,6 +58,8 @@ namespace Dots
             {
                 Field[i][j].Value = FirstMove ? Dot1 : Dot2;
                 Field[i][j].Active = true;
+                Field[i][j].Chain = false;
+                Field[i][j].Closed = false;
                 FirstMove = !FirstMove;
                 return true;
             }
@@ -68,32 +70,28 @@ namespace Dots
         public void CheckChains()
         {
             CalculateClosedDots(FirstMove ? Dot2 : Dot1);
-
             for (int i = 0; i < Field.Count; i++)
-                    for (int j = 0; j < Field.Count; j++)
+                for (int j = 0; j < Field.Count; j++)
+                    if (Field[i][j].Closed && Field[i][j].Active)
                     {
-                        if (Field[i][j].Closed && Field[i][j].Active)
-                        {
-                            var oldField = Clone();
-                            bool isTrueChain = false;
-                            var isChain = FindChain(i, j, FirstMove ? Dot2 : Dot1, ref isTrueChain);
-                            if (!isChain || !isTrueChain) Field = oldField;
-                        }
+                        var oldField = Clone();
+                        bool isTrueChain = false;
+                        var isChain = FindChain(i, j, FirstMove ? Dot2 : Dot1, ref isTrueChain);
+                        if (!isChain || !isTrueChain)
+                            Field = oldField;
                     }
 
             CalculateClosedDots(FirstMove ? Dot1 : Dot2);
-
             for (int i = 0; i < Field.Count; i++)
                 for (int j = 0; j < Field.Count; j++)
-                {
                     if (Field[i][j].Closed && Field[i][j].Active)
                     {
                         var oldField = Clone();
                         bool isTrueChain = false;
                         var isChain = FindChain(i, j, FirstMove ? Dot1 : Dot2, ref isTrueChain);
-                        if (!isChain || !isTrueChain) Field = oldField;
+                        if (!isChain || !isTrueChain)
+                            Field = oldField;
                     }
-                }
         }
 
         public List<List<Dot>> Clone()
@@ -112,11 +110,21 @@ namespace Dots
         public override string ToString()
         {
             var output = new StringBuilder();
+
+            for (int i = 0; i <= Field.Count; i++)
+            {
+                output.Append($"{i, 8}");
+            }
+            output.AppendLine();
+            output.AppendLine();
+
+            int count = 1;
             foreach (var row in Field)
             {
+                output.Append($"{count++, 8}");
                 row.ForEach(dot =>
                 {
-                    string value = $"{(dot.Active ? "" : "{")}{(dot.Chain ? "[" : "")}{dot.Value}{(dot.Chain ? "]" : "")}{(dot.Active ? "" : "}")}{(dot.Closed ? "*" : "")} ";
+                    string value = $"{(dot.Active ? "" : "{")}{(dot.Chain ? "[" : "")}{dot.Value}{(dot.Chain ? "]" : "")}{(dot.Active ? "" : "}")}{(dot.Closed ? "*" : "")}";
                     output.Append($"{value, 8}");
                 });
                 output.AppendLine();
@@ -279,20 +287,22 @@ namespace Dots
 
         private bool FindChain(int i, int j, byte dotValue, ref bool isTrueChain)
         {
-            Field[i][j].Active = false;
+            Field[i][j].Active = Field[i][j].Value == dotValue;
             Field[i][j].Chain = false;
 
-            isTrueChain = Field[i][j].Value != 0 && Field[i][j].Value != dotValue;
+            if (!isTrueChain)
+                isTrueChain = Field[i][j].Value != 0 && Field[i][j].Value != dotValue;
 
             // Top
             bool topChain = true;
             if (i != 0)
             {
-                if ((Field[i - 1][j].Value != dotValue && !Field[i - 1][j].Closed) ||
-                    (!Field[i - 1][j].Active && Field[i - 1][j].Value == dotValue))
+                if (Field[i - 1][j].Value != dotValue && !Field[i - 1][j].Closed)
                     return false;
                 if (Field[i - 1][j].Value == dotValue && Field[i - 1][j].Active)
                     Field[i - 1][j].Chain = true;
+                if (!Field[i - 1][j].Active && Field[i - 1][j].Value == dotValue)
+                    topChain = FindChain(i - 1, j, dotValue, ref isTrueChain);
                 if (Field[i - 1][j].Closed && Field[i - 1][j].Active)
                     topChain = FindChain(i - 1, j, dotValue, ref isTrueChain);
             }
@@ -301,11 +311,12 @@ namespace Dots
             bool bottomChain = true;
             if (i != Field.Count - 1)
             {
-                if ((Field[i + 1][j].Value != dotValue && !Field[i + 1][j].Closed) ||
-                        (!Field[i + 1][j].Active && Field[i + 1][j].Value == dotValue))
+                if (Field[i + 1][j].Value != dotValue && !Field[i + 1][j].Closed)
                     return false;
                 if (Field[i + 1][j].Value == dotValue && Field[i + 1][j].Active)
                     Field[i + 1][j].Chain = true;
+                if (!Field[i + 1][j].Active && Field[i + 1][j].Value == dotValue)
+                    bottomChain = FindChain(i + 1, j, dotValue, ref isTrueChain);
                 if (Field[i + 1][j].Closed && Field[i + 1][j].Active)
                     bottomChain = FindChain(i + 1, j, dotValue, ref isTrueChain); 
             }
@@ -314,11 +325,12 @@ namespace Dots
             bool leftChain = true;
             if (j != 0)
             {
-                if ((Field[i][j - 1].Value != dotValue && !Field[i][j - 1].Closed) ||
-                        (!Field[i][j - 1].Active && Field[i][j - 1].Value == dotValue))
+                if (Field[i][j - 1].Value != dotValue && !Field[i][j - 1].Closed)
                     return false;
                 if (Field[i][j - 1].Value == dotValue && Field[i][j - 1].Active)
                     Field[i][j - 1].Chain = true;
+                if (!Field[i][j - 1].Active && Field[i][j - 1].Value == dotValue)
+                    leftChain = FindChain(i, j - 1, dotValue, ref isTrueChain);
                 if (Field[i][j - 1].Closed && Field[i][j - 1].Active)
                     leftChain = FindChain(i, j - 1, dotValue, ref isTrueChain); 
             }
@@ -327,11 +339,12 @@ namespace Dots
             bool rightChain = true;
             if (j != Field.Count - 1)
             {
-                if ((Field[i][j + 1].Value != dotValue && !Field[i][j + 1].Closed) ||
-                        (!Field[i][j + 1].Active && Field[i][j + 1].Value == dotValue))
+                if (Field[i][j + 1].Value != dotValue && !Field[i][j + 1].Closed)
                     return false;
                 if (Field[i][j + 1].Value == dotValue && Field[i][j + 1].Active)
                     Field[i][j + 1].Chain = true;
+                if (!Field[i][j + 1].Active && Field[i][j + 1].Value == dotValue)
+                    rightChain = FindChain(i, j + 1, dotValue, ref isTrueChain);
                 if (Field[i][j + 1].Closed && Field[i][j + 1].Active)
                     rightChain = FindChain(i, j + 1, dotValue, ref isTrueChain); 
             }
