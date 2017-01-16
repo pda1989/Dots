@@ -10,19 +10,52 @@ namespace Dots
     {
         static void Main(string[] args)
         {
-            var game = new GameField(5);
+            int size = 10;
+
+            var game = new GameField(size);
+            Console.WriteLine($"Score {game.Result}");
             Console.WriteLine("Field");
             Console.WriteLine(game.ToString());
 
             while (true)
             {
-                Console.Write(" > ");
+                Console.Write($"{(game.FirstMove ? GameField.Dot1 : GameField.Dot2)} > ");
                 string command = Console.ReadLine();
 
                 if (command.ToLower() == "exit") break;
 
                 if (command.ToLower() == "clear")
-                    game.Initialyze(5);
+                    game.Initialyze(size);
+
+                if (command.ToLower() == "debug")
+                {
+                    try
+                    {
+                        if (game.MakeMove(2, 3)) game.CheckChains();
+                        if (game.MakeMove(3, 3)) game.CheckChains();
+                        if (game.MakeMove(3, 2)) game.CheckChains();
+                        if (game.MakeMove(1, 3)) game.CheckChains();
+                        if (game.MakeMove(3, 4)) game.CheckChains();
+                        if (game.MakeMove(2, 2)) game.CheckChains();
+                        if (game.MakeMove(4, 3)) game.CheckChains();
+                        if (game.MakeMove(2, 4)) game.CheckChains();
+                        if (game.MakeMove(1, 9)) game.CheckChains();
+                        if (game.MakeMove(3, 1)) game.CheckChains();
+                        if (game.MakeMove(2, 9)) game.CheckChains();
+                        if (game.MakeMove(3, 5)) game.CheckChains();
+                        if (game.MakeMove(3, 9)) game.CheckChains();
+                        if (game.MakeMove(4, 2)) game.CheckChains();
+                        if (game.MakeMove(4, 9)) game.CheckChains();
+                        if (game.MakeMove(4, 4)) game.CheckChains();
+                        if (game.MakeMove(5, 9)) game.CheckChains();
+                        if (game.MakeMove(5, 3)) game.CheckChains();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.ReadKey();
+                    }
+                }
 
                 var words = command.Trim().Split(' ');
                 if (words.Length == 2)
@@ -42,6 +75,7 @@ namespace Dots
                 }
 
                 Console.Clear();
+                Console.WriteLine($"Score {game.Result}");
                 Console.WriteLine("Field");
                 Console.WriteLine(game.ToString());
             }
