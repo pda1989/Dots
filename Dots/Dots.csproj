@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Dot.cs" />
     <Compile Include="GameField.cs" />
+    <Compile Include="IDot.cs" />
     <Compile Include="IGameField.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

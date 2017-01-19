@@ -19,7 +19,7 @@ namespace Dots
 
             while (true)
             {
-                Console.Write($"{(game.FirstMove ? GameField.Dot1 : GameField.Dot2)} > ");
+                Console.Write($"{(game.FirstMove ? GameField.DotFirst : GameField.DotSecond)} > ");
                 string command = Console.ReadLine();
 
                 if (command.ToLower() == "exit") break;

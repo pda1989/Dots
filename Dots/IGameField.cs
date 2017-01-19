@@ -9,7 +9,7 @@ namespace Dots
         string Result { get; }
 
         void Initialyze(int size);
-        List<List<Dot>> Clone();
+        List<List<Dot>> CloneField();
         bool MakeMove(int i, int j);
         void CheckChains();
     }
