@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Dots
 {
-    public class GameField : IGameField
+    public class GameField
     {
         static public readonly byte DotFirst = 1;
         static public readonly byte DotSecond = 2;
@@ -62,28 +62,9 @@ namespace Dots
             return newField;
         }
 
-        public override string ToString()
+        public void Paint(IGameFieldPainter painter)
         {
-            var output = new StringBuilder();
-
-            for (int i = 0; i <= Field.Count; i++)
-            {
-                output.Append($"{i, 8}");
-            }
-            output.AppendLine();
-            output.AppendLine();
-
-            int count = 1;
-            foreach (var row in Field)
-            {
-                output.Append($"{count++, 8}");
-                row.ForEach(dot =>
-                {
-                    output.Append($"{dot.ToString(), 8}");
-                });
-                output.AppendLine();
-            }
-            return output.ToString();
+            painter.Paint(this);
         }
 
         public bool MakeMove(int i, int j)

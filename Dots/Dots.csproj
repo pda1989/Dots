@@ -45,10 +45,10 @@
   <ItemGroup>
     <Compile Include="Dot.cs" />
     <Compile Include="GameField.cs" />
-    <Compile Include="IDot.cs" />
-    <Compile Include="IGameField.cs" />
+    <Compile Include="IGameFieldPainter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextPainter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

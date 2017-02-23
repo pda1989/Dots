@@ -15,7 +15,7 @@ namespace Dots
             var game = new GameField(size);
             Console.WriteLine($"Score {game.Result}");
             Console.WriteLine("Field");
-            Console.WriteLine(game.ToString());
+            game.Paint(new TextPainter());
 
             while (true)
             {
@@ -77,7 +77,7 @@ namespace Dots
                 Console.Clear();
                 Console.WriteLine($"Score {game.Result}");
                 Console.WriteLine("Field");
-                Console.WriteLine(game.ToString());
+                game.Paint(new TextPainter());
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace Dots
 {
-    public class Dot : IDot
+    public class Dot
     {
         public byte Value { get; set; } = 0;
         public bool Chain { get; set; } = false;
@@ -16,7 +16,5 @@
                 Value = this.Value
             };
         }
-        public override string ToString() => 
-            $"{(Active? "" : "{")}{(Chain? "[" : "")}{Value}{(Chain? "]" : "")}{(Active? "" : "}")}{(Closed? "*" : "")}";
     }
 }
