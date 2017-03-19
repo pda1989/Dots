@@ -8,6 +8,6 @@ namespace Dots
 {
     public interface IGameFieldPainter
     {
-        void Paint(Game field);
+        void Paint(Field field);
     }
 }

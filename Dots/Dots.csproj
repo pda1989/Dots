@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dot.cs" />
+    <Compile Include="Field.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="IGameFieldPainter.cs" />
     <Compile Include="Program.cs" />
