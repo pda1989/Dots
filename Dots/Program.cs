@@ -12,14 +12,14 @@ namespace Dots
         {
             int size = 10;
 
-            var game = new GameField(size);
-            Console.WriteLine($"Score {game.Result}");
+            var game = new Game(size);
+            Console.WriteLine($"Score {game.Result.FirstPlayer}:{game.Result.SecondPlayer}");
             Console.WriteLine("Field");
             game.Paint(new TextPainter());
 
             while (true)
             {
-                Console.Write($"{(game.FirstMove ? GameField.DotFirst : GameField.DotSecond)} > ");
+                Console.Write($"{(game.IsFirstMove ? Game.FirstPlayerDot : Game.SecondPlayerDot)} > ");
                 string command = Console.ReadLine();
 
                 if (command.ToLower() == "exit") break;
@@ -31,24 +31,24 @@ namespace Dots
                 {
                     try
                     {
-                        if (game.MakeMove(2, 3)) game.CheckChains();
-                        if (game.MakeMove(3, 3)) game.CheckChains();
-                        if (game.MakeMove(3, 2)) game.CheckChains();
-                        if (game.MakeMove(1, 3)) game.CheckChains();
-                        if (game.MakeMove(3, 4)) game.CheckChains();
-                        if (game.MakeMove(2, 2)) game.CheckChains();
-                        if (game.MakeMove(4, 3)) game.CheckChains();
-                        if (game.MakeMove(2, 4)) game.CheckChains();
-                        if (game.MakeMove(1, 9)) game.CheckChains();
-                        if (game.MakeMove(3, 1)) game.CheckChains();
-                        if (game.MakeMove(2, 9)) game.CheckChains();
-                        if (game.MakeMove(3, 5)) game.CheckChains();
-                        if (game.MakeMove(3, 9)) game.CheckChains();
-                        if (game.MakeMove(4, 2)) game.CheckChains();
-                        if (game.MakeMove(4, 9)) game.CheckChains();
-                        if (game.MakeMove(4, 4)) game.CheckChains();
-                        if (game.MakeMove(5, 9)) game.CheckChains();
-                        if (game.MakeMove(5, 3)) game.CheckChains();
+                        if (game.MakeMove(2, 3)) game.FinishMove();
+                        if (game.MakeMove(3, 3)) game.FinishMove();
+                        if (game.MakeMove(3, 2)) game.FinishMove();
+                        if (game.MakeMove(1, 3)) game.FinishMove();
+                        if (game.MakeMove(3, 4)) game.FinishMove();
+                        if (game.MakeMove(2, 2)) game.FinishMove();
+                        if (game.MakeMove(4, 3)) game.FinishMove();
+                        if (game.MakeMove(2, 4)) game.FinishMove();
+                        if (game.MakeMove(1, 9)) game.FinishMove();
+                        if (game.MakeMove(3, 1)) game.FinishMove();
+                        if (game.MakeMove(2, 9)) game.FinishMove();
+                        if (game.MakeMove(3, 5)) game.FinishMove();
+                        if (game.MakeMove(3, 9)) game.FinishMove();
+                        if (game.MakeMove(4, 2)) game.FinishMove();
+                        if (game.MakeMove(4, 9)) game.FinishMove();
+                        if (game.MakeMove(4, 4)) game.FinishMove();
+                        if (game.MakeMove(5, 9)) game.FinishMove();
+                        if (game.MakeMove(5, 3)) game.FinishMove();
                     }
                     catch (Exception e)
                     {
@@ -65,7 +65,7 @@ namespace Dots
                         try
                         {
                             if (game.MakeMove(i - 1, j - 1))
-                                game.CheckChains();
+                                game.FinishMove();
                         }
                         catch (Exception e)
                         {
@@ -75,7 +75,7 @@ namespace Dots
                 }
 
                 Console.Clear();
-                Console.WriteLine($"Score {game.Result}");
+                Console.WriteLine($"Score {game.Result.FirstPlayer}:{game.Result.SecondPlayer}");
                 Console.WriteLine("Field");
                 game.Paint(new TextPainter());
             }

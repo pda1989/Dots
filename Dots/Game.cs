@@ -1,52 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Dots
 {
-    public class GameField
+    public class Game
     {
-        static public readonly byte DotFirst = 1;
-        static public readonly byte DotSecond = 2;
+        static public readonly byte FirstPlayerDot = 1;
+        static public readonly byte SecondPlayerDot = 2;
 
 
         public List<List<Dot>> Field { get; private set; }
-        public bool FirstMove { get; private set; }
-        public string Result {
+        public bool IsFirstMove { get; private set; }
+        public (int FirstPlayer, int SecondPlayer) Result {
             get
             {
                 int dotFirstCount = 0;
                 int dotSecondCount = 0;
-                foreach (List<Dot> row in Field)
+                foreach (var row in Field)
                 {
-                    dotFirstCount += row.Count(dot => dot.Value == DotFirst && !dot.Active);
-                    dotSecondCount += row.Count(dot => dot.Value == DotSecond && !dot.Active);
+                    dotFirstCount += row.Count(dot => dot.Value == FirstPlayerDot && !dot.Active);
+                    dotSecondCount += row.Count(dot => dot.Value == SecondPlayerDot && !dot.Active);
                 }
-                return $"{dotSecondCount} : {dotFirstCount}";
+                return (dotSecondCount, dotFirstCount);
             }
         }
 
 
-        public GameField(int size)
+        public Game(int fieldSize)
         {
-            Initialyze(size);
-            FirstMove = true;
+            Initialyze(fieldSize);
+            IsFirstMove = true;
         }
 
-        public void Initialyze(int size)
+        public void Initialyze(int fieldSize)
         {
             Field = new List<List<Dot>>();
 
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < fieldSize; i++)
             {
                 var row = new List<Dot>();
-                for (int j = 0; j < size; j++)
+                for (int j = 0; j < fieldSize; j++)
                     row.Add(new Dot());
                 Field.Add(row);
             }
 
-            FirstMove = true;
+            IsFirstMove = true;
         }
 
         public List<List<Dot>> CloneField()
@@ -74,21 +73,21 @@ namespace Dots
 
             if (Field[i][j].Value == 0)
             {
-                Field[i][j].Value = FirstMove ? DotFirst : DotSecond;
+                Field[i][j].Value = IsFirstMove ? FirstPlayerDot : SecondPlayerDot;
                 Field[i][j].Active = true;
                 Field[i][j].Chain = false;
                 Field[i][j].Closed = false;
-                FirstMove = !FirstMove;
+                IsFirstMove = !IsFirstMove;
                 return true;
             }
             else
                 return false;
         }
 
-        public void CheckChains()
+        public void FinishMove()
         {
-            CheckChains(FirstMove ? DotSecond : DotFirst);
-            CheckChains(FirstMove ? DotFirst : DotSecond);
+            CheckChains(IsFirstMove ? SecondPlayerDot : FirstPlayerDot);
+            CheckChains(IsFirstMove ? FirstPlayerDot : SecondPlayerDot);
         }
 
         public void CheckChains(byte priorityDot)

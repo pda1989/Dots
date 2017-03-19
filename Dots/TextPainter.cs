@@ -8,7 +8,7 @@ namespace Dots
 {
     class TextPainter : IGameFieldPainter
     {
-        public void Paint(GameField gameField)
+        public void Paint(Game gameField)
         {
             var output = new StringBuilder();
 
