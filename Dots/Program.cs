@@ -11,10 +11,11 @@ namespace Dots
         {
             const int size = 10;
 
-            var game = new Game(size);
+            var game = new Game(new ConsolePainter());
+            game.Initialyze(size);
             Console.WriteLine($"Score {game.Result.FirstPlayerScore}:{game.Result.SecondPlayerScore}");
             Console.WriteLine("Field");
-            game.Paint(new ConsolePainter());
+            game.Paint();
 
             while (true)
             {
@@ -72,7 +73,7 @@ namespace Dots
                 Console.Clear();
                 Console.WriteLine($"Score {game.Result.FirstPlayerScore}:{game.Result.SecondPlayerScore}");
                 Console.WriteLine("Field");
-                game.Paint(new ConsolePainter());
+                game.Paint();
             }
         }
 

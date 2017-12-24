@@ -1,4 +1,5 @@
 ﻿using System;
+using Dots.Core.Field;
 
 namespace Dots.Core.Game
 {
@@ -6,18 +7,19 @@ namespace Dots.Core.Game
     {
         #region Fields
 
-        private Field.Field _gameField;
         private const byte FirstPlayerDot = 1;
         private const byte SecondPlayerDot = 2;
+        private readonly IGameFieldPainter _painter;
+
+        private Field.Field _gameField;
 
         #endregion
 
         #region Constructors
 
-        public Game(int fieldSize)
+        public Game(IGameFieldPainter painter)
         {
-            Initialyze(fieldSize);
-            FirstPlayerMove = true;
+            _painter = painter;
         }
 
         #endregion
@@ -35,7 +37,7 @@ namespace Dots.Core.Game
                 for (var i = 0; i < _gameField.Size; i++)
                 for (var j = 0; j < _gameField.Size; j++)
                 {
-                    var dot = _gameField[i][j];
+                    Dot dot = _gameField[i][j];
                     switch (dot.Value)
                     {
                         case FirstPlayerDot when !dot.Active:
@@ -66,13 +68,16 @@ namespace Dots.Core.Game
             FirstPlayerMove = true;
         }
 
-        public void Paint(IGameFieldPainter painter)
+        public void Paint()
         {
-            painter?.Paint(_gameField.Clone());
+            _painter?.Paint(_gameField.Clone());
         }
 
         public void MakeMove(int i, int j)
         {
+            if (_gameField == null)
+                throw new ArgumentNullException("The field is not initializedB");
+
             if (i < 0 || i >= _gameField.Size || j < 0 || j >= _gameField.Size)
                 throw new ArgumentOutOfRangeException("Wrong cell");
 
@@ -289,7 +294,7 @@ namespace Dots.Core.Game
             for (var j = 0; j < _gameField.Size; j++)
                 if (_gameField[i][j].Closed && _gameField[i][j].Active)
                 {
-                    var oldField = _gameField.Clone();
+                    Field.Field oldField = _gameField.Clone();
                     var isEficientChain = false;
                     bool isChain = FindChain(i, j, priorityDot, ref isEficientChain);
                     if (!isChain || !isEficientChain)
