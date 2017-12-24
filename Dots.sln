@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dots", "Dots\Dots.csproj", "{09540092-10B4-4053-8C20-9A2526D4AD8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dots.Core", "Dots.Core\Dots.Core.csproj", "{E7751F76-364A-48D9-A059-FDA55051F6D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{09540092-10B4-4053-8C20-9A2526D4AD8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09540092-10B4-4053-8C20-9A2526D4AD8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09540092-10B4-4053-8C20-9A2526D4AD8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7751F76-364A-48D9-A059-FDA55051F6D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7751F76-364A-48D9-A059-FDA55051F6D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7751F76-364A-48D9-A059-FDA55051F6D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7751F76-364A-48D9-A059-FDA55051F6D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {457940F2-3AE6-452D-98D3-A189442CB28B}
 	EndGlobalSection
 EndGlobal

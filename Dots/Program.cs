@@ -1,71 +1,66 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Dots.Core.Game;
 
 namespace Dots
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        #region Methods
+
+        private static void Main()
         {
-            int size = 10;
+            const int size = 10;
 
             var game = new Game(size);
-            Console.WriteLine($"Score {game.Result.FirstPlayer}:{game.Result.SecondPlayer}");
+            Console.WriteLine($"Score {game.Result.FirstPlayerScore}:{game.Result.SecondPlayerScore}");
             Console.WriteLine("Field");
-            game.Paint(new TextPainter());
+            game.Paint(new ConsolePainter());
 
             while (true)
             {
-                Console.Write($"{(game.IsFirstMove ? Game.FirstPlayerDot : Game.SecondPlayerDot)} > ");
+                Console.Write($"{(game.FirstPlayerMove ? 1 : 2)} > ");
                 string command = Console.ReadLine();
 
-                if (command.ToLower() == "exit") break;
+                if (command != null && command.ToLower() == "exit") break;
 
-                if (command.ToLower() == "clear")
+                if (command != null && command.ToLower() == "clear")
                     game.Initialyze(size);
 
-                if (command.ToLower() == "debug")
-                {
+                if (command != null && command.ToLower() == "debug")
                     try
                     {
-                        if (game.MakeMove(2, 3)) game.FinishMove();
-                        if (game.MakeMove(3, 3)) game.FinishMove();
-                        if (game.MakeMove(3, 2)) game.FinishMove();
-                        if (game.MakeMove(1, 3)) game.FinishMove();
-                        if (game.MakeMove(3, 4)) game.FinishMove();
-                        if (game.MakeMove(2, 2)) game.FinishMove();
-                        if (game.MakeMove(4, 3)) game.FinishMove();
-                        if (game.MakeMove(2, 4)) game.FinishMove();
-                        if (game.MakeMove(1, 9)) game.FinishMove();
-                        if (game.MakeMove(3, 1)) game.FinishMove();
-                        if (game.MakeMove(2, 9)) game.FinishMove();
-                        if (game.MakeMove(3, 5)) game.FinishMove();
-                        if (game.MakeMove(3, 9)) game.FinishMove();
-                        if (game.MakeMove(4, 2)) game.FinishMove();
-                        if (game.MakeMove(4, 9)) game.FinishMove();
-                        if (game.MakeMove(4, 4)) game.FinishMove();
-                        if (game.MakeMove(5, 9)) game.FinishMove();
-                        if (game.MakeMove(5, 3)) game.FinishMove();
+                        game.MakeMove(2, 3);
+                        game.MakeMove(3, 3);
+                        game.MakeMove(3, 2);
+                        game.MakeMove(1, 3);
+                        game.MakeMove(3, 4);
+                        game.MakeMove(2, 2);
+                        game.MakeMove(4, 3);
+                        game.MakeMove(2, 4);
+                        game.MakeMove(1, 9);
+                        game.MakeMove(3, 1);
+                        game.MakeMove(2, 9);
+                        game.MakeMove(3, 5);
+                        game.MakeMove(3, 9);
+                        game.MakeMove(4, 2);
+                        game.MakeMove(4, 9);
+                        game.MakeMove(4, 4);
+                        game.MakeMove(5, 9);
+                        game.MakeMove(5, 3);
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e.Message);
                         Console.ReadKey();
                     }
-                }
 
-                var words = command.Trim().Split(' ');
-                if (words.Length == 2)
+                var words = command?.Trim().Split(' ');
+                if (words?.Length == 2)
                 {
-                    int i, j;
-                    if (int.TryParse(words[0], out i) && int.TryParse(words[1], out j))
+                    if (int.TryParse(words[0], out int i) && int.TryParse(words[1], out int j))
                         try
                         {
-                            if (game.MakeMove(i - 1, j - 1))
-                                game.FinishMove();
+                            game.MakeMove(i - 1, j - 1);
                         }
                         catch (Exception e)
                         {
@@ -75,10 +70,12 @@ namespace Dots
                 }
 
                 Console.Clear();
-                Console.WriteLine($"Score {game.Result.FirstPlayer}:{game.Result.SecondPlayer}");
+                Console.WriteLine($"Score {game.Result.FirstPlayerScore}:{game.Result.SecondPlayerScore}");
                 Console.WriteLine("Field");
-                game.Paint(new TextPainter());
+                game.Paint(new ConsolePainter());
             }
         }
+
+        #endregion
     }
 }
