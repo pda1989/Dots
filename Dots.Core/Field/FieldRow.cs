@@ -32,13 +32,13 @@ namespace Dots.Core.Field
             get
             {
                 if (i < 0 || i >= _dots.Count)
-                    throw new IndexOutOfRangeException();
+                    throw new ArgumentOutOfRangeException();
                 return _dots[i];
             }
             set
             {
                 if (i < 0 || i >= _dots.Count)
-                    throw new IndexOutOfRangeException();
+                    throw new ArgumentOutOfRangeException();
                 _dots[i] = value;
             }
         }

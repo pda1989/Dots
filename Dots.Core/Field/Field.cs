@@ -36,7 +36,7 @@ namespace Dots.Core.Field
             get
             {
                 if (i < 0 || i >= _rows.Count)
-                    throw new IndexOutOfRangeException();
+                    throw new ArgumentOutOfRangeException();
                 return _rows[i];
             }
         }
