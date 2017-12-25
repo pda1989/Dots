@@ -5,4 +5,22 @@
              xmlns:local="clr-namespace:Dots.UI"
              xmlns:controls="clr-namespace:Dots.UI.Controls;assembly=Dots.UI.UWP"
              x:Class="Dots.UI.MainPage">
+    <Grid x:Name="ParentGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Label FontSize="18"
+               Margin="10"
+               FontAttributes="Bold"
+               x:Name="MoveLabel" />
+
+        <Label Grid.Row="0"
+               FontSize="18"
+               Margin="10"
+               HorizontalOptions="End"
+               FontAttributes="Bold"
+               x:Name="ScoresLabel" />
+    </Grid>
 </ContentPage>

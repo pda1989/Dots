@@ -33,14 +33,15 @@ namespace Dots.UI
 
         public void Paint(Field field)
         {
-            var grid = new Grid();
-
-            grid.HorizontalOptions = LayoutOptions.Center;
-            grid.VerticalOptions = LayoutOptions.Center;
-            grid.BackgroundColor = Color.DarkGray;
-            grid.Padding = new Thickness(10, 10, 10, 10);
-            grid.RowSpacing = 10;
-            grid.ColumnSpacing = 10;
+            var grid = new Grid
+            {
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                BackgroundColor = Color.DarkGray,
+                Padding = new Thickness(10, 10, 10, 10),
+                RowSpacing = 10,
+                ColumnSpacing = 10
+            };
 
             for (var i = 0; i < field.Size; i++)
             {
@@ -72,7 +73,10 @@ namespace Dots.UI
                 grid.Children.Add(dotView, j, i);
             }
 
-            Content = grid;
+            MoveLabel.Text = _game.FirstPlayerMove ? "First player" : "Second player";
+            MoveLabel.TextColor = _game.FirstPlayerMove ? Color.Blue : Color.Brown;
+            ScoresLabel.Text = $"Score: {_game.Result.FirstPlayerScore} : {_game.Result.SecondPlayerScore}";
+            ParentGrid.Children.Add(grid, 0, 1);
         }
 
         #endregion

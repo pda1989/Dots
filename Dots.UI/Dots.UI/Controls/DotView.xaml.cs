@@ -66,8 +66,8 @@ namespace Dots.UI.Controls
             };
             if (Source.Dot.Chain)
                 label.Text = "C";
-            else if (Source.Dot.Closed)
-                label.Text = "*";
+            //else if (Source.Dot.ChainValue != 0)
+                //label.Text = $"{Source.Dot.ChainValue}";
             else
                 label.Text = "";
 
