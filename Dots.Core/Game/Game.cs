@@ -32,8 +32,8 @@ namespace Dots.Core.Game
         {
             get
             {
-                var dotFirstCount = 0;
-                var dotSecondCount = 0;
+                var secondPlayerScore = 0;
+                var firstPlayerScore = 0;
                 for (var i = 0; i < _gameField.Size; i++)
                 for (var j = 0; j < _gameField.Size; j++)
                 {
@@ -41,18 +41,18 @@ namespace Dots.Core.Game
                     switch (dot.Value)
                     {
                         case FirstPlayerDot when !dot.Active:
-                            dotFirstCount++;
+                            secondPlayerScore++;
                             break;
                         case SecondPlayerDot when !dot.Active:
-                            dotSecondCount++;
+                            firstPlayerScore++;
                             break;
                     }
                 }
 
                 return new GameResult
                 {
-                    FirstPlayerScore = dotSecondCount,
-                    SecondPlayerScore = dotFirstCount
+                    FirstPlayerScore = firstPlayerScore,
+                    SecondPlayerScore = secondPlayerScore
                 };
             }
         }
@@ -76,7 +76,7 @@ namespace Dots.Core.Game
         public void MakeMove(int i, int j)
         {
             if (_gameField == null)
-                throw new ArgumentNullException("The field is not initializedB");
+                throw new ArgumentNullException("The field is not initialized");
 
             if (i < 0 || i >= _gameField.Size || j < 0 || j >= _gameField.Size)
                 throw new ArgumentOutOfRangeException("Wrong cell");
@@ -87,8 +87,6 @@ namespace Dots.Core.Game
                 _gameField[i][j].Active = true;
                 _gameField[i][j].Chain = false;
                 _gameField[i][j].Closed = false;
-                FirstPlayerMove = !FirstPlayerMove;
-
                 FinishMove();
             }
             else
@@ -96,7 +94,6 @@ namespace Dots.Core.Game
                 throw new ArgumentException("The cell is not empty");
             }
         }
-
 
         private void CalculateClosedDots(byte dotValue)
         {
@@ -115,8 +112,11 @@ namespace Dots.Core.Game
                     // Check corners
                     if (i == 0 && j == 0)
                     {
-                        _gameField[i][j].Closed = _gameField[0][1].Value == dotValue && _gameField[0][1].Active &&
-                                                  _gameField[1][0].Value == dotValue && _gameField[1][0].Active;
+                        _gameField[i][j].Closed =
+                            _gameField[0][1].Value == dotValue &&
+                            _gameField[0][1].Active &&
+                            _gameField[1][0].Value == dotValue &&
+                            _gameField[1][0].Active;
                         continue;
                     }
 
@@ -290,6 +290,7 @@ namespace Dots.Core.Game
         private void CheckChains(byte priorityDot)
         {
             CalculateClosedDots(priorityDot);
+
             for (var i = 0; i < _gameField.Size; i++)
             for (var j = 0; j < _gameField.Size; j++)
                 if (_gameField[i][j].Closed && _gameField[i][j].Active)
@@ -371,8 +372,10 @@ namespace Dots.Core.Game
 
         private void FinishMove()
         {
-            CheckChains(FirstPlayerMove ? SecondPlayerDot : FirstPlayerDot);
             CheckChains(FirstPlayerMove ? FirstPlayerDot : SecondPlayerDot);
+            CheckChains(FirstPlayerMove ? SecondPlayerDot : FirstPlayerDot);
+
+            FirstPlayerMove = !FirstPlayerMove;
         }
 
         #endregion

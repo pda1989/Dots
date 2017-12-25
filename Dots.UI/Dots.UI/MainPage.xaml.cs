@@ -8,7 +8,12 @@ namespace Dots.UI
 {
     public partial class MainPage : ContentPage, IGameFieldPainter
     {
-        private Game _game;
+        #region Fields
+
+        private readonly Game _game;
+
+        #endregion
+
         #region Constructors
 
         public MainPage()
@@ -30,10 +35,17 @@ namespace Dots.UI
         {
             var grid = new Grid();
 
+            grid.HorizontalOptions = LayoutOptions.Center;
+            grid.VerticalOptions = LayoutOptions.Center;
+            grid.BackgroundColor = Color.DarkGray;
+            grid.Padding = new Thickness(10, 10, 10, 10);
+            grid.RowSpacing = 10;
+            grid.ColumnSpacing = 10;
+
             for (var i = 0; i < field.Size; i++)
             {
-                grid.RowDefinitions.Add(new RowDefinition());
-                grid.ColumnDefinitions.Add(new ColumnDefinition());
+                grid.RowDefinitions.Add(new RowDefinition {Height = 40});
+                grid.ColumnDefinitions.Add(new ColumnDefinition {Width = 40});
             }
 
             for (var i = 0; i < field.Size; i++)
@@ -41,23 +53,18 @@ namespace Dots.UI
             {
                 var dotView = new DotView
                 {
-                    VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center,
-                    HeightRequest = 50,
-                    WidthRequest = 50,
                     Source = new DotModel
                     {
-                        I = i,
-                        J = j,
+                        Row = i,
+                        Column = j,
                         Dot = field[i][j]
                     },
                     TappedCommand = new Command(dotModel =>
                     {
                         if (dotModel is DotModel model)
                         {
-                            _game.MakeMove(model.I, model.J);
+                            _game.MakeMove(model.Row, model.Column);
                             _game.Paint();
-                           //DisplayAlert("Debug", $"Model: {model.I}:{model.J}", "OK");
                         }
                     })
                 };

@@ -6,8 +6,8 @@ namespace Dots.UI.Models
     {
         #region Properties
 
-        public int I { get; set; }
-        public int J { get; set; }
+        public int Row { get; set; }
+        public int Column { get; set; }
         public Dot Dot { get; set; }
 
         #endregion
