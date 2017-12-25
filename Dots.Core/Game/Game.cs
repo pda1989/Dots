@@ -76,10 +76,12 @@ namespace Dots.Core.Game
         public void MakeMove(int i, int j)
         {
             if (_gameField == null)
-                throw new ArgumentNullException("The field is not initialized");
+                throw new ArgumentException("The field is not initialized");
 
-            if (i < 0 || i >= _gameField.Size || j < 0 || j >= _gameField.Size)
-                throw new ArgumentOutOfRangeException("Wrong cell");
+            if (i < 0 || i >= _gameField.Size)
+                throw new ArgumentOutOfRangeException(nameof(i));
+            if (j < 0 || j >= _gameField.Size)
+                throw new ArgumentOutOfRangeException(nameof(j));
 
             if (_gameField[i][j].Value == 0)
             {
