@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dots.Core.Field;
 using Dots.Core.Game;
 using Dots.UI.Controls;
@@ -95,8 +96,15 @@ namespace Dots.UI
                             {
                                 if (dotModel is DotModel model)
                                 {
-                                    _game.MakeMove(model.Row, model.Column);
-                                    _game.Paint();
+                                    try
+                                    {
+                                        _game.MakeMove(model.Row, model.Column);
+                                        _game.Paint();
+                                    }
+                                    catch
+                                    {
+                                        // ignored
+                                    }
                                 }
                             })
                         };
