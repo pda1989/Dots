@@ -1,4 +1,5 @@
-﻿using Dots.Core.Field;
+﻿using System.Collections.Generic;
+using Dots.Core.Field;
 using Dots.Core.Game;
 using Dots.UI.Controls;
 using Dots.UI.Models;
@@ -11,6 +12,9 @@ namespace Dots.UI
         #region Fields
 
         private readonly Game _game;
+        private List<List<DotView>> _controls;
+        private int _fieldSize;
+        private Grid _grid;
 
         #endregion
 
@@ -33,50 +37,92 @@ namespace Dots.UI
 
         public void Paint(Field field)
         {
-            var grid = new Grid
+            if (_grid == null)
             {
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-                BackgroundColor = Color.DarkGray,
-                Padding = new Thickness(10, 10, 10, 10),
-                RowSpacing = 10,
-                ColumnSpacing = 10
-            };
+                _grid = new Grid
+                {
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    BackgroundColor = Color.DarkGray,
+                    Padding = new Thickness(10, 10, 10, 10),
+                    Margin = new Thickness(10, 10, 10, 10),
+                    RowSpacing = 5,
+                    ColumnSpacing = 5
+                };
 
-            for (var i = 0; i < field.Size; i++)
+                _grid.SizeChanged += (s, e) =>
+                {
+                    if (Height <= Width)
+                    {
+                        _grid.WidthRequest = _grid.Height;
+                        _grid.HeightRequest = _grid.Height;
+                    }
+                    else
+                    {
+                        _grid.HeightRequest = _grid.Width;
+                        _grid.WidthRequest = _grid.Width;
+                    }
+                };
+            }
+
+            if (_fieldSize != field.Size)
             {
-                grid.RowDefinitions.Add(new RowDefinition {Height = 40});
-                grid.ColumnDefinitions.Add(new ColumnDefinition {Width = 40});
+                _controls = new List<List<DotView>>();
+
+                _grid.RowDefinitions.Clear();
+                _grid.ColumnDefinitions.Clear();
+
+                for (var i = 0; i < field.Size; i++)
+                {
+                    _grid.RowDefinitions.Add(new RowDefinition());
+                    _grid.ColumnDefinitions.Add(new ColumnDefinition());
+                }
+
+                for (var i = 0; i < field.Size; i++)
+                {
+                    _controls.Add(new List<DotView>());
+                    for (var j = 0; j < field.Size; j++)
+                    {
+                        var dotView = new DotView
+                        {
+                            Source = new DotModel
+                            {
+                                Row = i,
+                                Column = j,
+                                Dot = field[i][j]
+                            },
+                            TappedCommand = new Command(dotModel =>
+                            {
+                                if (dotModel is DotModel model)
+                                {
+                                    _game.MakeMove(model.Row, model.Column);
+                                    _game.Paint();
+                                }
+                            })
+                        };
+
+                        _grid.Children.Add(dotView, j, i);
+                        _controls[i].Add(dotView);
+                    }
+                }
+
+                _fieldSize = field.Size;
             }
 
             for (var i = 0; i < field.Size; i++)
             for (var j = 0; j < field.Size; j++)
-            {
-                var dotView = new DotView
-                {
-                    Source = new DotModel
+                if (_controls[i][j].Source?.Dot != field[i][j])
+                    _controls[i][j].Source = new DotModel
                     {
                         Row = i,
                         Column = j,
                         Dot = field[i][j]
-                    },
-                    TappedCommand = new Command(dotModel =>
-                    {
-                        if (dotModel is DotModel model)
-                        {
-                            _game.MakeMove(model.Row, model.Column);
-                            _game.Paint();
-                        }
-                    })
-                };
-
-                grid.Children.Add(dotView, j, i);
-            }
+                    };
 
             MoveLabel.Text = _game.FirstPlayerMove ? "First player" : "Second player";
             MoveLabel.TextColor = _game.FirstPlayerMove ? Color.Blue : Color.Brown;
             ScoresLabel.Text = $"Score: {_game.Result.FirstPlayerScore} : {_game.Result.SecondPlayerScore}";
-            ParentGrid.Children.Add(grid, 0, 1);
+            ParentGrid.Children.Add(_grid, 0, 1);
         }
 
         #endregion

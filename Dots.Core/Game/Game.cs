@@ -296,7 +296,6 @@ namespace Dots.Core.Game
 
             for (var i = 0; i < _gameField.Size; i++)
             for (var j = 0; j < _gameField.Size; j++)
-            {
                 if (_gameField[i][j].Closed && _gameField[i][j].Active)
                 {
                     Field.Field oldField = _gameField.Clone();
@@ -305,13 +304,12 @@ namespace Dots.Core.Game
                     if (!isChain || !isEficientChain)
                         _gameField = oldField;
                 }
-            }
         }
 
         private bool FindChain(int i, int j, byte dotValue, ref bool isEficientChain)
         {
             _gameField[i][j].Active = _gameField[i][j].Value == dotValue;
-            _gameField[i][j].ChainValue = !_gameField[i][j].Active ? dotValue : (byte)0;
+            _gameField[i][j].ChainValue = !_gameField[i][j].Active ? dotValue : (byte) 0;
             _gameField[i][j].Chain = false;
 
             if (!isEficientChain)

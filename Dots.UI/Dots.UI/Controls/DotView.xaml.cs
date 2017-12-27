@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using Dots.UI.Models;
 using Xamarin.Forms;
+using Xamarin.Forms.Platform.UWP;
 using Xamarin.Forms.Xaml;
 
 namespace Dots.UI.Controls
@@ -62,38 +63,32 @@ namespace Dots.UI.Controls
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
                 FontSize = 12,
-                FontAttributes = FontAttributes.Bold
+                FontAttributes = FontAttributes.Bold,
+                Text = Source.Dot.Chain ? "C" : ""
             };
-            if (Source.Dot.Chain)
-                label.Text = "C";
-            //else if (Source.Dot.ChainValue != 0)
-                //label.Text = $"{Source.Dot.ChainValue}";
-            else
-                label.Text = "";
 
             var control = new BoxView();
             switch (Source.Dot.Value)
             {
-                case 0:
-                    control.BackgroundColor = Color.AliceBlue;
-                    break;
-                case 1:
+                case 1 when Source.Dot.Active:
                     control.BackgroundColor = Color.Blue;
                     break;
-                case 2:
+                case 1 when !Source.Dot.Active:
+                    control.BackgroundColor = Color.CornflowerBlue;
+                    break;
+                case 2 when Source.Dot.Active:
                     control.BackgroundColor = Color.Brown;
                     break;
+                case 2 when !Source.Dot.Active:
+                    control.BackgroundColor = Color.DarkSalmon;
+                    break;
+                default:
+                    control.BackgroundColor = Color.AliceBlue;
+                    break;
             }
-            if (!Source.Dot.Active && Source.Dot.Value == 1)
-                control.BackgroundColor = Color.CornflowerBlue;
-            if (!Source.Dot.Active && Source.Dot.Value == 2)
-                control.BackgroundColor = Color.DarkSalmon;
 
             var tapGestureRecognizer = new TapGestureRecognizer();
-            tapGestureRecognizer.Tapped += (s, e) =>
-            {
-                TappedCommand?.Execute(Source);
-            };
+            tapGestureRecognizer.Tapped += (s, e) => { TappedCommand?.Execute(Source); };
             control.GestureRecognizers.Add(tapGestureRecognizer);
 
             grid.Children.Add(control, 0, 0);
