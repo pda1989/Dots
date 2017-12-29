@@ -2,10 +2,9 @@
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Dots.UI"
              xmlns:controls="clr-namespace:Dots.UI.Controls;assembly=Dots.UI.UWP"
-             x:Class="Dots.UI.MainPage">
-    <Grid x:Name="ParentGrid">
+             x:Class="Dots.UI.Pages.GamePage">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -14,13 +13,20 @@
         <Label FontSize="18"
                Margin="10"
                FontAttributes="Bold"
-               x:Name="MoveLabel" />
+               Text="{Binding Player}" 
+               TextColor="{Binding PlayerColor}"/>
 
         <Label Grid.Row="0"
                FontSize="18"
                Margin="10"
                HorizontalOptions="End"
                FontAttributes="Bold"
-               x:Name="ScoresLabel" />
+               Text="{Binding Score}" />
+
+        <controls:FieldView Grid.Row="1"
+                            Margin="10"
+                            FieldColor="LightGray"
+                            Field="{Binding Field}"
+                            CellTapped="{Binding TappedCommand}"/>
     </Grid>
 </ContentPage>

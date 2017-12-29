@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
 using Dots.Core.Field;
-using Dots.Core.Game;
 using Dots.UI.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -9,12 +8,18 @@ using Xamarin.Forms.Xaml;
 namespace Dots.UI.Controls
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class FieldView : ContentView, IGameFieldPainter
+    public partial class FieldView : ContentView
     {
         #region Fields
 
-        private static readonly BindableProperty TappedCommandProperty =
-            BindableProperty.Create("TappedCommand", typeof(ICommand), typeof(DotView));
+        public static readonly BindableProperty CellTappedProperty =
+            BindableProperty.Create(nameof(CellTapped), typeof(ICommand), typeof(FieldView));
+
+        public static readonly BindableProperty FieldProperty =
+            BindableProperty.Create(nameof(Field), typeof(Field), typeof(FieldView));
+
+        public static readonly BindableProperty FieldColorProperty =
+            BindableProperty.Create(nameof(FieldColor), typeof(Color), typeof(FieldView), Color.White);
 
         private List<List<DotView>> _controls;
         private int _fieldSize;
@@ -33,29 +38,59 @@ namespace Dots.UI.Controls
 
         #region Properties
 
-        public ICommand TappedCommand
+        public ICommand CellTapped
         {
-            get => (ICommand) GetValue(TappedCommandProperty);
-            set => SetValue(TappedCommandProperty, value);
+            get => (ICommand) GetValue(CellTappedProperty);
+            set => SetValue(CellTappedProperty, value);
+        }
+
+        public Field Field
+        {
+            get => (Field) GetValue(FieldProperty);
+            set => SetValue(FieldProperty, value);
+        }
+
+        public Color FieldColor
+        {
+            get => (Color) GetValue(FieldColorProperty);
+            set => SetValue(FieldColorProperty, value);
         }
 
         #endregion
 
         #region Methods
 
-        public void Paint(Field field)
+        protected override void OnPropertyChanged(string propertyName = null)
         {
+            base.OnPropertyChanged(propertyName);
+
+            if (propertyName == CellTappedProperty.PropertyName)
+                _controls?.ForEach(row =>
+                    row.ForEach(control =>
+                        control.TappedCommand = CellTapped));
+
+            if (propertyName == FieldProperty.PropertyName)
+                Paint();
+
+            if (propertyName == FieldColorProperty.PropertyName && _grid != null)
+                _grid.BackgroundColor = FieldColor;
+        }
+
+        private void Paint()
+        {
+            if (Field == null)
+                return;
+
             if (_grid == null)
             {
                 _grid = new Grid
                 {
                     HorizontalOptions = LayoutOptions.Center,
                     VerticalOptions = LayoutOptions.Center,
-                    BackgroundColor = Color.DarkGray,
+                    BackgroundColor = FieldColor,
                     Padding = new Thickness(10, 10, 10, 10),
-                    Margin = new Thickness(10, 10, 10, 10),
-                    RowSpacing = 5,
-                    ColumnSpacing = 5
+                    RowSpacing = 10,
+                    ColumnSpacing = 10
                 };
 
                 _grid.SizeChanged += (s, e) =>
@@ -75,23 +110,23 @@ namespace Dots.UI.Controls
                 Content = _grid;
             }
 
-            if (_fieldSize != field.Size)
+            if (_fieldSize != Field.Size)
             {
                 _controls = new List<List<DotView>>();
 
                 _grid.RowDefinitions.Clear();
                 _grid.ColumnDefinitions.Clear();
 
-                for (var i = 0; i < field.Size; i++)
+                for (var i = 0; i < Field.Size; i++)
                 {
                     _grid.RowDefinitions.Add(new RowDefinition());
                     _grid.ColumnDefinitions.Add(new ColumnDefinition());
                 }
 
-                for (var i = 0; i < field.Size; i++)
+                for (var i = 0; i < Field.Size; i++)
                 {
                     _controls.Add(new List<DotView>());
-                    for (var j = 0; j < field.Size; j++)
+                    for (var j = 0; j < Field.Size; j++)
                     {
                         var dotView = new DotView
                         {
@@ -99,9 +134,8 @@ namespace Dots.UI.Controls
                             {
                                 Row = i,
                                 Column = j,
-                                Dot = field[i][j]
-                            },
-                            TappedCommand = TappedCommand
+                                Dot = Field[i][j]
+                            }
                         };
 
                         _grid.Children.Add(dotView, j, i);
@@ -109,18 +143,21 @@ namespace Dots.UI.Controls
                     }
                 }
 
-                _fieldSize = field.Size;
+                _fieldSize = Field.Size;
             }
 
-            for (var i = 0; i < field.Size; i++)
-            for (var j = 0; j < field.Size; j++)
-                if (_controls[i][j].Source?.Dot != field[i][j])
+            for (var i = 0; i < Field.Size; i++)
+            for (var j = 0; j < Field.Size; j++)
+            {
+                if (_controls[i][j].Source?.Dot != Field[i][j])
                     _controls[i][j].Source = new DotModel
                     {
                         Row = i,
                         Column = j,
-                        Dot = field[i][j]
+                        Dot = Field[i][j]
                     };
+                _controls[i][j].TappedCommand = CellTapped;
+            }
         }
 
         #endregion

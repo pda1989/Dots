@@ -11,7 +11,7 @@ namespace Dots.Tests
         public void Initialize_RightSize_EmptyField()
         {
             // Arrenge
-            var game = new Game(null);
+            var game = new Game();
 
             // Act
             game.Initialyze(5);
@@ -27,7 +27,7 @@ namespace Dots.Tests
         public void MakeMove_WrongIndexes_Exception()
         {
             // Arrenge
-            var game = new Game(null);
+            var game = new Game();
 
             // Act
             game.Initialyze(5);
@@ -39,7 +39,7 @@ namespace Dots.Tests
         public void MakeMove_NotEmptyCell_Exception()
         {
             // Arrenge
-            var game = new Game(null);
+            var game = new Game();
 
             // Act
             game.Initialyze(3);
@@ -51,7 +51,7 @@ namespace Dots.Tests
         public void MakeMove_FewMoves_Result04()
         {
             // Arrenge
-            var game = new Game(null);
+            var game = new Game();
 
             // Act
             game.Initialyze(10);

@@ -1,34 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using Dots.UI.ViewModels;
+using FreshMvvm;
 using Xamarin.Forms;
 
 namespace Dots.UI
 {
-	public partial class App : Application
-	{
-		public App ()
-		{
-			InitializeComponent();
+    public partial class App : Application
+    {
+        #region Constructors
 
-			MainPage = new Dots.UI.MainPage();
-		}
+        public App()
+        {
+            InitializeComponent();
 
-		protected override void OnStart ()
-		{
-			// Handle when your app starts
-		}
+            MainPage = FreshPageModelResolver.ResolvePageModel<GamePageModel>();
+        }
 
-		protected override void OnSleep ()
-		{
-			// Handle when your app sleeps
-		}
+        #endregion
 
-		protected override void OnResume ()
-		{
-			// Handle when your app resumes
-		}
-	}
+        #region Methods
+
+        protected override void OnResume()
+        {
+            // Handle when your app resumes
+        }
+
+        protected override void OnSleep()
+        {
+            // Handle when your app sleeps
+        }
+
+        protected override void OnStart()
+        {
+            // Handle when your app starts
+        }
+
+        #endregion
+    }
 }

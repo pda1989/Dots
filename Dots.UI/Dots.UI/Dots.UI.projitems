@@ -10,7 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml" />
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)MainPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
@@ -24,10 +23,12 @@
       <DependentUpon>FieldView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Models\DotModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\GamePageModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\GamePage.xaml.cs">
+      <DependentUpon>GamePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Controls\DotView.xaml">
@@ -42,7 +43,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)ViewModels\" />
-    <Folder Include="$(MSBuildThisFileDirectory)Views\" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\GamePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

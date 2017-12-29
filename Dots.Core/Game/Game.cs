@@ -9,18 +9,14 @@ namespace Dots.Core.Game
 
         private const byte FirstPlayerDot = 1;
         private const byte SecondPlayerDot = 2;
-        private readonly IGameFieldPainter _painter;
 
         private Field.Field _gameField;
 
         #endregion
 
-        #region Constructors
+        #region Delegates and Events
 
-        public Game(IGameFieldPainter painter)
-        {
-            _painter = painter;
-        }
+        public event Action<Field.Field> OnFieldChanged;
 
         #endregion
 
@@ -66,11 +62,8 @@ namespace Dots.Core.Game
             _gameField = new Field.Field(fieldSize);
 
             FirstPlayerMove = true;
-        }
 
-        public void Paint()
-        {
-            _painter?.Paint(_gameField.Clone());
+            FieldChanged();
         }
 
         public void MakeMove(int i, int j)
@@ -380,6 +373,13 @@ namespace Dots.Core.Game
             CheckChains(FirstPlayerMove ? SecondPlayerDot : FirstPlayerDot);
 
             FirstPlayerMove = !FirstPlayerMove;
+
+            FieldChanged();
+        }
+
+        protected virtual void FieldChanged()
+        {
+            OnFieldChanged?.Invoke(_gameField.Clone());
         }
 
         #endregion
