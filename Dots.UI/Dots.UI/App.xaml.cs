@@ -1,5 +1,7 @@
 ﻿using Dots.UI.ViewModels;
 using FreshMvvm;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
 using Xamarin.Forms;
 
 namespace Dots.UI
@@ -11,6 +13,8 @@ namespace Dots.UI
         public App()
         {
             InitializeComponent();
+
+            AppCenter.Start("2c565b56-3ce5-4ff0-b998-8862eb707d7f", typeof(Analytics));
 
             MainPage = FreshPageModelResolver.ResolvePageModel<GamePageModel>();
         }
