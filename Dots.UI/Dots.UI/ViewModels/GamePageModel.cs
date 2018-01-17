@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using Dots.Core.Field;
 using Dots.Core.Game;
 using Dots.UI.Models;
 using FreshMvvm;
+using Microsoft.AppCenter.Analytics;
 using Xamarin.Forms;
 
 namespace Dots.UI.ViewModels
@@ -98,6 +100,13 @@ namespace Dots.UI.ViewModels
                     catch (Exception exception)
                     {
                         CurrentPage.DisplayAlert("Error", exception.Message, "OK");
+
+                        var properties = new Dictionary<string, string>
+                        {
+                            ["Message"] = exception.Message,
+                            ["StackTrace"] = exception.StackTrace
+                        };
+                        Analytics.TrackEvent("Error", properties);
                     }
             });
         }
