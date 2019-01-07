@@ -1,32 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Input;
-using Dots.Core.Field;
+﻿using Dots.Core.Field.Models;
 using Dots.Core.Game;
 using Dots.UI.Models;
 using FreshMvvm;
 using Microsoft.AppCenter.Analytics;
+using System;
+using System.Collections.Generic;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Dots.UI.ViewModels
 {
     public class GamePageModel : FreshBasePageModel
     {
-        #region Fields
-
         private Field _field;
         private Game _game;
         private string _player;
         private Color _playerColor;
         private string _score;
 
-        #endregion
-
-        #region Properties
-
         public Field Field
         {
             get => _field;
+
             set
             {
                 _field = value;
@@ -37,6 +32,7 @@ namespace Dots.UI.ViewModels
         public string Player
         {
             get => _player;
+
             set
             {
                 _player = value;
@@ -44,9 +40,21 @@ namespace Dots.UI.ViewModels
             }
         }
 
+        public Color PlayerColor
+        {
+            get => _playerColor;
+
+            set
+            {
+                _playerColor = value;
+                RaisePropertyChanged();
+            }
+        }
+
         public string Score
         {
             get => _score;
+
             set
             {
                 _score = value;
@@ -55,20 +63,6 @@ namespace Dots.UI.ViewModels
         }
 
         public ICommand TappedCommand { get; set; }
-
-        public Color PlayerColor
-        {
-            get => _playerColor;
-            set
-            {
-                _playerColor = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region Methods
 
         public override void Init(object initData)
         {
@@ -110,7 +104,5 @@ namespace Dots.UI.ViewModels
                     }
             });
         }
-
-        #endregion
     }
 }

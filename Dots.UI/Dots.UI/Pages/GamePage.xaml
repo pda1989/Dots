@@ -2,7 +2,7 @@
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:Dots.UI.Controls;assembly=Dots.UI.UWP"
+             xmlns:controls="clr-namespace:Dots.UI.Controls"
              x:Class="Dots.UI.Pages.GamePage">
     <Grid>
         <Grid.RowDefinitions>
@@ -13,8 +13,8 @@
         <Label FontSize="18"
                Margin="10"
                FontAttributes="Bold"
-               Text="{Binding Player}" 
-               TextColor="{Binding PlayerColor}"/>
+               Text="{Binding Player}"
+               TextColor="{Binding PlayerColor}" />
 
         <Label Grid.Row="0"
                FontSize="18"
@@ -27,6 +27,6 @@
                             Margin="10"
                             FieldColor="LightGray"
                             Field="{Binding Field}"
-                            CellTapped="{Binding TappedCommand}"/>
+                            CellTapped="{Binding TappedCommand}" />
     </Grid>
 </ContentPage>

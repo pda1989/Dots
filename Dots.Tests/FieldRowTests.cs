@@ -1,57 +1,49 @@
-﻿using System;
-using Dots.Core.Field;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dots.Core.Field.Models;
+using NUnit.Framework;
+using System;
 
 namespace Dots.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class FieldRowTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void FieldRow_WrongSize_Exception()
-        {
-            var fieldRow = new FieldRow(-1);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void ThisRead_WrongIndex_Exception()
-        {
-            var fieldRow = new FieldRow(2);
-
-            Dot dot = fieldRow[-1];
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void ThisWrite_WrongIndex_Exception()
-        {
-            var fieldRow = new FieldRow(2) {[-1] = new Dot()};
-        }
-
-        [TestMethod]
+        [Test]
         public void FieldRow_RightSize_InitializedDots()
         {
-            // Arrange
             var fieldRow = new FieldRow(2);
 
-            // Assert
             Assert.IsNotNull(fieldRow[0]);
             Assert.IsNotNull(fieldRow[1]);
         }
 
-        [TestMethod]
-        public void ThisWrite_RightIndex_InitializedDots()
+        [Test]
+        public void FieldRow_WrongSize_Exception()
         {
-            // Arrange
+            Assert.Throws<ArgumentException>(() => new FieldRow(-1));
+        }
+
+        [Test]
+        public void ThisRead_WrongIndex_Exception()
+        {
             var fieldRow = new FieldRow(2);
 
-            // Act
-            fieldRow[0] = new Dot {Value = 10};
+            Assert.Throws<ArgumentOutOfRangeException>(() => { var dot = fieldRow[-1]; });
+        }
 
-            // Assert
+        [Test]
+        public void ThisWrite_RightIndex_InitializedDots()
+        {
+            var fieldRow = new FieldRow(2);
+
+            fieldRow[0] = new Dot { Value = 10 };
+
             Assert.IsTrue(fieldRow[0].Value == 10);
+        }
+
+        [Test]
+        public void ThisWrite_WrongIndex_Exception()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => new FieldRow(2) { [-1] = new Dot() });
         }
     }
 }

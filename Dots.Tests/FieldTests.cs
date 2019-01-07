@@ -1,44 +1,37 @@
-﻿using System;
-using Dots.Core.Field;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dots.Core.Field.Models;
+using NUnit.Framework;
+using System;
 
 namespace Dots.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class FieldTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Field_WrongSize_Exception()
-        {
-            var field = new Field(-1);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void ThisRead_WrongIndex_Exception()
-        {
-            // Arrange 
-            var field = new Field(2);
-
-            // Act
-            Dot dot = field[-1][0];
-        }
-
-        [TestMethod]
+        [Test]
         public void Clone_Field_SameValues()
         {
-            // Arrange
             var field = new Field(2);
 
-            // Act
             var newField = field.Clone();
 
-            // Assert
             Assert.IsTrue(field[0][0].Value == newField[0][0].Value);
             Assert.IsTrue(field[0][1].Value == newField[0][1].Value);
             Assert.IsTrue(field[1][0].Value == newField[1][0].Value);
             Assert.IsTrue(field[1][1].Value == newField[1][1].Value);
+        }
+
+        [Test]
+        public void Field_WrongSize_Exception()
+        {
+            Assert.Throws<ArgumentException>(() => new Field(-1));
+        }
+
+        [Test]
+        public void ThisRead_WrongIndex_Exception()
+        {
+            var field = new Field(2);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => { Dot dot = field[-1][0]; });
         }
     }
 }

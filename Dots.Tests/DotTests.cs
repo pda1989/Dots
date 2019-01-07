@@ -1,21 +1,18 @@
-﻿using Dots.Core.Field;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dots.Core.Field.Models;
+using NUnit.Framework;
 
 namespace Dots.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class DotTests
     {
-        [TestMethod]
+        [Test]
         public void Clone_Dot_SameValues()
         {
-            // Arrange
             var dot = new Dot();
 
-            // Act
             Dot newDot = dot.Clone();
 
-            // Assert
             Assert.IsTrue(newDot.Value == dot.Value);
             Assert.IsTrue(newDot.Active == dot.Active);
             Assert.IsTrue(newDot.Chain == dot.Chain);

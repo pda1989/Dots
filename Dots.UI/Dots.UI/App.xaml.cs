@@ -3,13 +3,14 @@ using FreshMvvm;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
 namespace Dots.UI
 {
     public partial class App : Application
     {
-        #region Constructors
-
         public App()
         {
             InitializeComponent();
@@ -18,10 +19,6 @@ namespace Dots.UI
 
             MainPage = FreshPageModelResolver.ResolvePageModel<GamePageModel>();
         }
-
-        #endregion
-
-        #region Methods
 
         protected override void OnResume()
         {
@@ -37,7 +34,5 @@ namespace Dots.UI
         {
             // Handle when your app starts
         }
-
-        #endregion
     }
 }

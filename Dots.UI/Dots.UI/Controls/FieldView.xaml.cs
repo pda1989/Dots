@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Windows.Input;
-using Dots.Core.Field;
+﻿using Dots.Core.Field.Models;
 using Dots.UI.Models;
+using System.Collections.Generic;
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,55 +10,41 @@ namespace Dots.UI.Controls
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class FieldView : ContentView
     {
-        #region Fields
-
         public static readonly BindableProperty CellTappedProperty =
             BindableProperty.Create(nameof(CellTapped), typeof(ICommand), typeof(FieldView));
-
-        public static readonly BindableProperty FieldProperty =
-            BindableProperty.Create(nameof(Field), typeof(Field), typeof(FieldView));
 
         public static readonly BindableProperty FieldColorProperty =
             BindableProperty.Create(nameof(FieldColor), typeof(Color), typeof(FieldView), Color.White);
 
+        public static readonly BindableProperty FieldProperty =
+                    BindableProperty.Create(nameof(Field), typeof(Field), typeof(FieldView));
+
         private List<List<DotView>> _controls;
         private int _fieldSize;
         private Grid _grid;
-
-        #endregion
-
-        #region Constructors
 
         public FieldView()
         {
             InitializeComponent();
         }
 
-        #endregion
-
-        #region Properties
-
         public ICommand CellTapped
         {
-            get => (ICommand) GetValue(CellTappedProperty);
+            get => (ICommand)GetValue(CellTappedProperty);
             set => SetValue(CellTappedProperty, value);
         }
 
         public Field Field
         {
-            get => (Field) GetValue(FieldProperty);
+            get => (Field)GetValue(FieldProperty);
             set => SetValue(FieldProperty, value);
         }
 
         public Color FieldColor
         {
-            get => (Color) GetValue(FieldColorProperty);
+            get => (Color)GetValue(FieldColorProperty);
             set => SetValue(FieldColorProperty, value);
         }
-
-        #endregion
-
-        #region Methods
 
         protected override void OnPropertyChanged(string propertyName = null)
         {
@@ -147,19 +133,17 @@ namespace Dots.UI.Controls
             }
 
             for (var i = 0; i < Field.Size; i++)
-            for (var j = 0; j < Field.Size; j++)
-            {
-                if (_controls[i][j].Source?.Dot != Field[i][j])
-                    _controls[i][j].Source = new DotModel
-                    {
-                        Row = i,
-                        Column = j,
-                        Dot = Field[i][j]
-                    };
-                _controls[i][j].TappedCommand = CellTapped;
-            }
+                for (var j = 0; j < Field.Size; j++)
+                {
+                    if (_controls[i][j].Source?.Dot != Field[i][j])
+                        _controls[i][j].Source = new DotModel
+                        {
+                            Row = i,
+                            Column = j,
+                            Dot = Field[i][j]
+                        };
+                    _controls[i][j].TappedCommand = CellTapped;
+                }
         }
-
-        #endregion
     }
 }

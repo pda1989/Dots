@@ -1,59 +1,29 @@
-﻿using System;
-using Dots.Core.Game;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dots.Core.Game;
+using NUnit.Framework;
+using System;
 
 namespace Dots.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class GameTests
     {
-        [TestMethod]
+        [Test]
         public void Initialize_RightSize_EmptyField()
         {
-            // Arrenge
             var game = new Game();
 
-            // Act
             game.Initialyze(5);
 
-            // Assert
             Assert.IsTrue(game.FirstPlayerMove);
             Assert.IsTrue(game.Result.FirstPlayerScore == 0);
             Assert.IsTrue(game.Result.SecondPlayerScore == 0);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void MakeMove_WrongIndexes_Exception()
-        {
-            // Arrenge
-            var game = new Game();
-
-            // Act
-            game.Initialyze(5);
-            game.MakeMove(-1, -1);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void MakeMove_NotEmptyCell_Exception()
-        {
-            // Arrenge
-            var game = new Game();
-
-            // Act
-            game.Initialyze(3);
-            game.MakeMove(1, 1);
-            game.MakeMove(1, 1);
-        }
-
-        [TestMethod]
+        [Test]
         public void MakeMove_FewMoves_Result04()
         {
-            // Arrenge
             var game = new Game();
 
-            // Act
             game.Initialyze(10);
             game.MakeMove(2, 3);
             game.MakeMove(3, 3);
@@ -74,9 +44,33 @@ namespace Dots.Tests
             game.MakeMove(5, 9);
             game.MakeMove(5, 3);
 
-            // Assert
             Assert.IsTrue(game.Result.FirstPlayerScore == 0);
             Assert.IsTrue(game.Result.SecondPlayerScore == 4);
+        }
+
+        [Test]
+        public void MakeMove_NotEmptyCell_Exception()
+        {
+            var game = new Game();
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                game.Initialyze(3);
+                game.MakeMove(1, 1);
+                game.MakeMove(1, 1);
+            });
+        }
+
+        [Test]
+        public void MakeMove_WrongIndexes_Exception()
+        {
+            var game = new Game();
+
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                game.Initialyze(5);
+                game.MakeMove(-1, -1);
+            });
         }
     }
 }
