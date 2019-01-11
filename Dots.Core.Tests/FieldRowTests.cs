@@ -8,22 +8,23 @@ namespace Dots.Tests
     public class FieldRowTests
     {
         [Test]
-        public void FieldRow_RightSize_InitializedDots()
+        public void FieldRow_WithSize2_Initializes2EmptyDots()
         {
             var fieldRow = new FieldRow(2);
 
-            Assert.IsNotNull(fieldRow[0]);
-            Assert.IsNotNull(fieldRow[1]);
+            Assume.That(fieldRow[0], Is.Not.Null);
+            Assume.That(fieldRow[1], Is.Not.Null);
+            Assume.That(fieldRow[0], Is.EqualTo(fieldRow[1]));
         }
 
         [Test]
-        public void FieldRow_WrongSize_Exception()
+        public void FieldRow_WithWrongSize_ThrowsArgumentException()
         {
             Assert.Throws<ArgumentException>(() => new FieldRow(-1));
         }
 
         [Test]
-        public void ThisRead_WrongIndex_Exception()
+        public void ThisRead_WithWrongIndex_ThrowsArgumentOutOfRangeException()
         {
             var fieldRow = new FieldRow(2);
 
@@ -31,17 +32,17 @@ namespace Dots.Tests
         }
 
         [Test]
-        public void ThisWrite_RightIndex_InitializedDots()
+        public void ThisWrite_WithRightIndex_InitializesDot()
         {
             var fieldRow = new FieldRow(2);
 
             fieldRow[0] = new Dot { Value = 10 };
 
-            Assert.IsTrue(fieldRow[0].Value == 10);
+            Assume.That(fieldRow[0].Value, Is.EqualTo(10));
         }
 
         [Test]
-        public void ThisWrite_WrongIndex_Exception()
+        public void ThisWrite_WithWrongIndex_ThrowsArgumentOutOfRangeExceptionException()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => new FieldRow(2) { [-1] = new Dot() });
         }

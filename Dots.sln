@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dots.Core", "Dots.Core\Dots.Core.csproj", "{E7751F76-364A-48D9-A059-FDA55051F6D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dots.Tests", "Dots.Tests\Dots.Tests.csproj", "{280E3DB8-0A9C-4BD7-9C1A-F824C5CEA448}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dots.Core.Tests", "Dots.Core.Tests\Dots.Core.Tests.csproj", "{280E3DB8-0A9C-4BD7-9C1A-F824C5CEA448}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dots.UI.Android", "Dots.UI\Dots.UI.Android\Dots.UI.Android.csproj", "{218CE582-9276-45C7-BF7A-5AE8907F14FF}"
 EndProject
@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dots.UI.iOS", "Dots.UI\Dots
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dots.UI.UWP", "Dots.UI\Dots.UI.UWP\Dots.UI.UWP.csproj", "{11D1A924-D650-4026-B9F1-3F91E61981E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dots.UI", "Dots.UI\Dots.UI\Dots.UI.csproj", "{2B8ED635-E55D-4AA3-ACA3-671BBD4BC566}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dots.UI", "Dots.UI\Dots.UI\Dots.UI.csproj", "{2B8ED635-E55D-4AA3-ACA3-671BBD4BC566}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
