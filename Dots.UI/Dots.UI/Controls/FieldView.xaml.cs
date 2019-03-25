@@ -17,7 +17,7 @@ namespace Dots.UI.Controls
             BindableProperty.Create(nameof(FieldColor), typeof(Color), typeof(FieldView), Color.White);
 
         public static readonly BindableProperty FieldProperty =
-                    BindableProperty.Create(nameof(Field), typeof(Field), typeof(FieldView));
+            BindableProperty.Create(nameof(Field), typeof(Field), typeof(FieldView));
 
         private List<List<DotView>> _controls;
         private int _fieldSize;

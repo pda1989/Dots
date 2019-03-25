@@ -8,7 +8,7 @@
         // The dot is in the chain
         public bool Chain { get; set; }
 
-        // The dot inside the chain with this number
+        // The dot is inside the chain with this number
         public byte ChainValue { get; set; }
 
         // The dot can be inside a chain

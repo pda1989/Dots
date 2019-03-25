@@ -51,6 +51,8 @@ namespace Dots.UI.ViewModels
             }
         }
 
+        public ICommand ResetCommand { get; set; }
+
         public string Score
         {
             get => _score;
@@ -68,14 +70,7 @@ namespace Dots.UI.ViewModels
         {
             base.Init(initData);
 
-            _game = new Game();
-            _game.OnFieldChanged += newField =>
-                Field = newField;
-            _game.Initialyze(10);
-
-            Player = _game.FirstPlayerMove ? "First player" : "Second player";
-            PlayerColor = _game.FirstPlayerMove ? Color.Blue : Color.Brown;
-            Score = $"Score: {_game.Result.FirstPlayerScore} : {_game.Result.SecondPlayerScore}";
+            ResetCommand = new Command(CreateNewGame);
 
             TappedCommand = new Command(dotModel =>
             {
@@ -103,6 +98,27 @@ namespace Dots.UI.ViewModels
                         Analytics.TrackEvent("Error", properties);
                     }
             });
+
+            CreateNewGame();
+        }
+
+        private void CreateNewGame()
+        {
+            if (_game != null)
+                _game.OnFieldChanged -= OnFieldChanged;
+
+            _game = new Game();
+            _game.OnFieldChanged += OnFieldChanged;
+            _game.Initialyze(10);
+
+            Player = _game.FirstPlayerMove ? "First player" : "Second player";
+            PlayerColor = _game.FirstPlayerMove ? Color.Blue : Color.Brown;
+            Score = $"Score: {_game.Result.FirstPlayerScore} : {_game.Result.SecondPlayerScore}";
+        }
+
+        private void OnFieldChanged(Field field)
+        {
+            Field = field;
         }
     }
 }
